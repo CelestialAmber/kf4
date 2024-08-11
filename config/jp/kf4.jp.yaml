@@ -1,0 +1,65 @@
+name: Fatal Frame 1 (US)
+sha1: 5ac4626e0d76218e977b01f4fae5948de9a1755e
+options:
+    basename: SLUS_203.88
+    target_path: SLUS_203.88
+    base_path: .
+    asm_path: asm
+    src_path: ../../src
+    build_path: build
+    asset_path: assets
+    compiler: EEGCC
+    find_file_boundaries: False
+    platform: ps2
+    string_encoding: EUC-JP
+    create_undefined_funcs_auto: False
+    create_undefined_syms_auto: True
+    undefined_funcs_auto_path: undefined_funcs_auto.txt
+    undefined_syms_auto_path: undefined_syms_auto.txt
+    symbol_addrs_path: symbol_addrs.txt
+    extensions_path: ../../tools/splat_ext
+    section_order: [".text", ".vutext", ".data", ".vudata", ".rodata", ".lit4", ".sdata", ".sbss", ".bss", ".vubss"]
+    auto_all_sections: [".data", ".sdata", ".sbss", ".lit4", ".rodata", ".bss"]
+    disasm_unknown: True
+    subalign: 4
+    named_regs_for_c_funcs: False
+    gp_value: 0x35d070
+    ld_bss_is_noload: true
+# custom field used by fix_linkerscript.py to fix linkerscript alignments
+_section_subalign:
+    elf_header: 8
+    main: 2
+    main_bss: 1
+    reg_info: 4
+    mips_debug: 4
+    rest: 4
+segments:
+    - [0, databin, elf_header]
+    - name: main
+      type: code
+      start: 0x1000
+      vram: 0x100000
+      bss_size: 0x0b3024 # size of .sbss + size of .bss
+      align: 1
+      subalign: 2 # safe subalign value. proper values are applied by fix_linkerscript.py where necessary
+      # text has align 8 but other sections may have a different alignment ...
+      # explicit align correction is performed by fix_linkerscript.py during
+      # project configuration. vram address is used, when reported, in non text
+      # sections to calculate the correct align value.
+      subsegments:
+
+# Section Headers:
+#   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+#   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+#   [ 1] .text             PROGBITS        00100000 001000 1465a4 00  AX  0   0 64
+#   [ 2] .vutext           PROGBITS        002465b0 1475b0 009b80 00  AX  0   0 16
+#   [ 3] .reginfo          MIPS_REGINFO    00250130 25888c 000018 01      0   0  4
+#   [ 4] .data             PROGBITS        00250180 151180 0f9488 00  WA  0   0 64
+#   [ 5] .vudata           PROGBITS        00349608 24a608 000000 00  WA  0   0  1
+#   [ 6] .rodata           PROGBITS        00349680 24a680 00b9a8 00   A  0   0 16
+#   [ 7] .lit4             PROGBITS        00355080 256080 001268 00 WAp  0   0  4
+#   [ 8] .sdata            PROGBITS        00356300 257300 001534 00 WAp  0   0  8
+#   [ 9] .sbss             NOBITS          00357880 258880 0003f4 00 WAp  0   0  8
+#   [10] .bss              NOBITS          00357c80 25888c 0b2c30 00  WA  0   0 64
+#   [11] .vubss            NOBITS          0040a8b0 25888c 000000 00  WA  0   0  1
+#   [12] .mdebug           MIPS_DEBUG      0040a8b0 2588a4 4c4d30 01      0   0  4
